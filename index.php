@@ -4,7 +4,7 @@
 		require_once("./classes/cakes.php");
 		require_once("config.php");
 		session_start();
-		if($_SESSION['user'] != null) {
+		if($_SESSION['user'] != null || $_COOKIE['user'] != null) {
 			echo "<script>window.location.assign('cake.php');</script>";
 		}
 	?>
@@ -42,6 +42,7 @@
 									$query = mysqli_query($con, "SELECT * FROM `users` WHERE `username` = '".$username."' AND `password` = '".$password."'");
 									if(mysqli_num_rows($query) != 0) {
 										$_SESSION['user'] = $username;
+										setcookie("user", $_SESSION['user'], time()+60*60*24*30, '/', $webDomain, false, false);
 										echo "<script>window.location.assign('cake.php');</script>";
 									} else {
 										echo "<p class = \"ErrorMessage\">Incorrect username or password please try again</p>";
